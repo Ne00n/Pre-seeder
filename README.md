@@ -6,3 +6,8 @@
 ```
 pyasn_util_download.py --latest && pyasn_util_convert.py --single rib.202* asn.dat
 ```
+
+**Run**<br />
+```
+python3 seed.py
+```
