@@ -1,4 +1,4 @@
-import subprocess, netaddr, pyasn
+import subprocess, geoip2.database, netaddr, pyasn
 
 def networkToSubs(subnet):
     sub, prefix = subnet.split("/")
@@ -10,11 +10,12 @@ print("Microsoft: 8075, AWS: 16509")
 asns = input("Please input asn numbers, eg. 3000,4000: ")
 asns = asns.split(",")
 
-print(asns)
-
-print("Building list")
+countries = input("Please enter target continents, e.g AS, EU, NA: ")
+countries = countries.split(",")
 
 ips = []
+print("Building list")
+reader = geoip2.database.Reader("geo.mmdb")
 with open('asn.dat') as file:
     for line in file:
         if ";" in line: continue
@@ -26,7 +27,12 @@ with open('asn.dat') as file:
                 ip, prefix = sub.split("/")
                 ip = ip[:-1]
                 ip = f"{ip}1"
-                ips.append(ip)
+                try:
+                    response = reader.city(ip)
+                    if response.continent.code in countries:
+                        ips.append(ip)
+                except:
+                    pass
 
 print("Seeding...")
 batchSize,count,pings = 1000,0,1

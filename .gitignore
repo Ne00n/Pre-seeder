@@ -29,6 +29,7 @@ MANIFEST
 #pyasn
 asn.dat
 rib.*
+geo.mmdb
 
 # PyInstaller
 #  Usually these files are written by a python script from a template
